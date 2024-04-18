@@ -4,7 +4,7 @@ namespace SocialMediaApp.Models.ViewModels
 {
     public class FollowRequest
     {
-        public string From { get; set; }
+        public string? From { get; set; }
 
         [Required]
         public string To { get; set; }

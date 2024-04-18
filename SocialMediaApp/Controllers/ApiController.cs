@@ -30,6 +30,11 @@ namespace SocialMediaApp.Controllers
             return userId ?? throw new StatusException(HttpStatusCode.Unauthorized, "Login Required");
         }
 
+        protected string? GetUserClaim(string claim)
+        {
+            return HttpContext.User.FindFirstValue(claim);
+        }
+
         protected void SetCookie(string key, string value, int? expiresInMinutes, bool isEssential = false)
         {
             HttpContext.Response.Cookies.Append(key, value, new CookieOptions

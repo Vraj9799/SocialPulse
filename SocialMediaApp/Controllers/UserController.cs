@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using SocialMediaApp.Models.Shared;
 using SocialMediaApp.Models;
 using System.Net;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using SocialMediaApp.Models.Entities;
 using SocialMediaApp.Models.ViewModels;
@@ -17,10 +18,11 @@ namespace SocialMediaApp.Controllers
         ILogger<UserController> logger,
         IOptions<AppSettings> appSettings,
         UserManager<ApplicationUser> userManager,
-        IUserService userService
+        IUserService userService,
+        IActivityService activityService
     ) : ApiController(logger, appSettings)
     {
-        [HttpGet]
+        [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
             var appUser = await userManager.FindByIdAsync(GetCurrentUserId());
@@ -70,14 +72,26 @@ namespace SocialMediaApp.Controllers
         public async Task<IActionResult> FollowUser([FromBody] FollowRequest followRequest)
         {
             await userService.FollowUserAsync(GetCurrentUserId(), followRequest.To);
-            return Ok(new ApiResponse<string>("You followed the user."));
+            var toUser = (await  userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
+            await activityService.AddAsync(GetCurrentUserId(), $"You started following ${toUser?.Name}.");
+            await activityService.AddAsync(toUser?.Id, $"${GetUserClaim(ClaimTypes.Name)} started following you.");
+            return Ok(new ApiResponse<string>($"You started following ${toUser?.Name}."));
         }
 
         [HttpPut("unfollow")]
         public async Task<IActionResult> UnFollowUser([FromBody] FollowRequest followRequest)
         {
             await userService.UnFollowUserAsync(GetCurrentUserId(), followRequest.To);
-            return Ok(new ApiResponse<string>("You followed the user."));
+            var toUser = (await  userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
+            await activityService.AddAsync(GetCurrentUserId(), $"You un-followed ${toUser?.Name}.");
+            return Ok(new ApiResponse<string>($"You un-followed ${toUser?.Name}."));
+        }
+
+        [HttpGet("get-activities")]
+        public IActionResult GetActivities(int pageNo = 1, int limit = 10)
+        {
+            var activities = activityService.GetUserActivities(GetCurrentUserId(),pageNo,limit);
+            return Ok(new ApiResponse<IEnumerable<Activity>>(activities));
         }
 
         private async Task<ApplicationUser> GetUserByEmailOrUsername(string username)

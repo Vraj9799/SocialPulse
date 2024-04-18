@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using SocialMediaApp.Models.Shared;
 using SocialMediaApp.Models;
 using System.Net;
+using System.Security.Claims;
 using SocialMediaApp.Models.ViewModels;
 using SocialMediaApp.Services;
 using SocialMediaApp.Mappings;
@@ -14,7 +15,8 @@ namespace SocialMediaApp.Controllers
            ILogger<PostController> logger,
            IOptions<AppSettings> appSettings,
            IPostService _postService,
-           IUserService _userService
+           IUserService _userService,
+           IActivityService activityService
            ) : ApiController(logger, appSettings)
     {
         [HttpGet("feed")]
@@ -64,7 +66,7 @@ namespace SocialMediaApp.Controllers
             return Ok(new ApiResponse<PostViewModel>(postViewModel));
         }
 
-        [HttpPost("add")]
+        [HttpPost()]
         public async Task<IActionResult> Add([FromBody] PostRequest postRequest)
         {
             var userId = GetCurrentUserId();
@@ -93,6 +95,8 @@ namespace SocialMediaApp.Controllers
         {
             var userId = GetCurrentUserId();
             await _postService.LikeAsync(postId, userId);
+            var post = await _postService.GetById(postId, userId);
+            await activityService.AddAsync(userId, $"{GetUserClaim(ClaimTypes.Name)} liked your post.");
             return Ok(new ApiResponse<string>("You liked the post."));
         }
 

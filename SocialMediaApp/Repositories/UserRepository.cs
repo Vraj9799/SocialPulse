@@ -6,9 +6,9 @@ namespace SocialMediaApp.Repositories
 {
     public interface IUserRepository
     {
-        Task FollowUser(UserFollow userFollow);
+        Task<UserFollow> FollowUser(UserFollow userFollow);
 
-        Task UnFollowUser(UserFollow userFollow);
+        Task<UserFollow> UnFollowUser(UserFollow userFollow);
 
         Task<IEnumerable<UserFollow>> GetMyFollowers(string userId);
 
@@ -19,10 +19,11 @@ namespace SocialMediaApp.Repositories
 
     public class UserRepository(ApplicationDbContext _context) : IUserRepository
     {
-        public async Task FollowUser(UserFollow userFollow)
+        public async Task<UserFollow> FollowUser(UserFollow userFollow)
         {
             _context.UserFollowers.Add(userFollow);
             await _context.SaveChangesAsync();
+            return userFollow;
         }
 
         public async Task<IEnumerable<UserFollow>> GetMyFollowings(string userId)
@@ -39,12 +40,13 @@ namespace SocialMediaApp.Repositories
                 .ToListAsync();
         }
 
-        public async Task UnFollowUser(UserFollow userFollow)
+        public async Task<UserFollow> UnFollowUser(UserFollow userFollow)
         {
             userFollow = await _context.UserFollowers
                 .FirstAsync(_ => _.FromUserId == userFollow.FromUserId && _.ToUserId == userFollow.ToUserId);
             _context.UserFollowers.Remove(userFollow);
             await _context.SaveChangesAsync();
+            return userFollow;
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetApplicationUsersAsync(ISet<string> userIds)

@@ -219,6 +219,8 @@ namespace SocialMediaApp
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IActivityRepository, ActivityRepository>();
+            services.AddScoped<IActivityService, ActivityService>();
         }
 
         private static async Task SeedRoles(IServiceCollection services)
