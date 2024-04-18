@@ -133,40 +133,40 @@ namespace SocialMediaApp
                                 if (context.Request.Cookies.TryGetValue(Constants.ACCESS_TOKEN, out string accessToken) &&
                                 context.Request.Cookies.TryGetValue(Constants.REFRESH_TOKEN, out string refreshToken)
                             )
-                            {
-                                try
                                 {
-                                    var serviceProvider = services.BuildServiceProvider();
-                                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                                    var tokenService = serviceProvider.GetRequiredService<ITokenService>();
-                                    var principal = tokenService.GetClaimsFromToken(accessToken);
-                                    var userId = principal.Claims.First(_ => _.Type == ClaimTypes.NameIdentifier)?.Value;
-                                    var appUser = await userManager.FindByIdAsync(userId);
-                                    var roles = await userManager.GetRolesAsync(appUser);
-                                    (accessToken, refreshToken) = tokenService.GenerateAuthToken(appUser, roles);
-                                    await tokenService.DeleteRefreshToken(refreshToken, userId);
-                                    context.Response.Cookies.Append(Constants.ACCESS_TOKEN, accessToken, new CookieOptions
+                                    try
                                     {
-                                        Secure = true,
-                                        HttpOnly = true,
-                                        IsEssential = true,
-                                    });
-                                    context.HttpContext.Response.Cookies.Append(Constants.REFRESH_TOKEN, refreshToken, new CookieOptions
+                                        var serviceProvider = services.BuildServiceProvider();
+                                        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                                        var tokenService = serviceProvider.GetRequiredService<ITokenService>();
+                                        var principal = tokenService.GetClaimsFromToken(accessToken);
+                                        var userId = principal.Claims.First(_ => _.Type == ClaimTypes.NameIdentifier)?.Value;
+                                        var appUser = await userManager.FindByIdAsync(userId);
+                                        var roles = await userManager.GetRolesAsync(appUser);
+                                        (accessToken, refreshToken) = tokenService.GenerateAuthToken(appUser, roles);
+                                        await tokenService.DeleteRefreshToken(refreshToken, userId);
+                                        context.Response.Cookies.Append(Constants.ACCESS_TOKEN, accessToken, new CookieOptions
+                                        {
+                                            Secure = true,
+                                            HttpOnly = true,
+                                            IsEssential = true,
+                                        });
+                                        context.HttpContext.Response.Cookies.Append(Constants.REFRESH_TOKEN, refreshToken, new CookieOptions
+                                        {
+                                            Secure = true,
+                                            HttpOnly = true,
+                                            IsEssential = true,
+                                        });
+                                        context.Principal = principal;
+                                        context.Success();
+                                    }
+                                    catch (Exception ex)
                                     {
-                                        Secure = true,
-                                        HttpOnly = true,
-                                        IsEssential = true,
-                                    });
-                                    context.Principal = principal;
-                                    context.Success();
+                                        context.Response.Cookies.Delete(Constants.ACCESS_TOKEN);
+                                        context.Response.Cookies.Delete(Constants.REFRESH_TOKEN);
+                                        context.Fail("Login is required.");
+                                    }
                                 }
-                                catch (Exception ex)
-                                {
-                                    context.Response.Cookies.Delete(Constants.ACCESS_TOKEN);
-                                    context.Response.Cookies.Delete(Constants.REFRESH_TOKEN);
-                                    context.Fail("Login is required.");
-                                }
-                            }
                             }
                             else
                             {
@@ -221,6 +221,7 @@ namespace SocialMediaApp
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<IActivityService, ActivityService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         private static async Task SeedRoles(IServiceCollection services)
@@ -228,7 +229,7 @@ namespace SocialMediaApp
             using (var scope = services.BuildServiceProvider())
             {
                 var context = scope.GetService<ApplicationDbContext>();
-                if (context.Database.GetPendingMigrations().Any()) 
+                if (context.Database.GetPendingMigrations().Any())
                     context.Database.Migrate();
             }
             using var roleManager = services.BuildServiceProvider()

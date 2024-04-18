@@ -10,14 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d932e4bb-cd7d-462a-8a52-1bfee36dde0b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SocialMediaApp/Models/Entities/Activity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocialMediaApp/Repositories/ActivityRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SocialMediaApp/Services/ActivityService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SocialMediaApp/Controllers/ApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/Controllers/ApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SocialMediaApp/Controllers/PostController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/Controllers/PostController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SocialMediaApp/Models/Shared/EmailModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SocialMediaApp/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/dataSources/760634ee-0e0c-44bc-8c6e-e04572faa210.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/dataSources/760634ee-0e0c-44bc-8c6e-e04572faa210.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialMediaApp/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SocialMediaApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SocialMediaApp/Repositories/UserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/Repositories/UserRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SocialMediaApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/SocialMediaApp/appsettings.Development.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +28,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/503de39f189e313e0dfae7247983c3491ded7bf1293f6de5c8de3862885b/SerilogLoggerScope.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/877ed5774ff9cdc37faca391f350c1b4a2318da6e928dbbb8522f57fcadc27/MongoCredential.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -39,31 +39,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.SocialMediaApp: https.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.SocialMediaApp: https.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mongo",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;,
+      &quot;postgresql&quot;
     ],
-    "rider.external.source.directories": [
-      "/Users/vrajshah/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
-      "/Users/vrajshah/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
-      "/Users/vrajshah/.local/share/Symbols/src"
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/Users/vrajshah/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/vrajshah/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
+      &quot;/Users/vrajshah/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.SocialMediaApp: https">
     <configuration name="SocialMediaApp: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/SocialMediaApp/SocialMediaApp.csproj" />
@@ -125,7 +125,9 @@
       <updated>1713321645842</updated>
       <workItem from="1713321648191" duration="3597000" />
       <workItem from="1713325355208" duration="5704000" />
-      <workItem from="1713410136009" duration="2959000" />
+      <workItem from="1713410136009" duration="3907000" />
+      <workItem from="1713446792781" duration="5000" />
+      <workItem from="1713448025063" duration="449000" />
     </task>
     <servers />
   </component>
@@ -150,6 +152,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs</url>
+          <line>44</line>
+          <properties documentPath="$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs" initialLine="44" containingFunctionPresentation="Method 'SendEmailConfirm'">
+            <startOffsets>
+              <option value="1647" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1648" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs</url>
+          <line>68</line>
+          <properties documentPath="$PROJECT_DIR$/SocialMediaApp/Controllers/UserController.cs" initialLine="68" containingFunctionPresentation="Method 'VerifyEmailConfirmation'">
+            <startOffsets>
+              <option value="2744" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2745" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

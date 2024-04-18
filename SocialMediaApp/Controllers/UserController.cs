@@ -19,6 +19,7 @@ namespace SocialMediaApp.Controllers
         IOptions<AppSettings> appSettings,
         UserManager<ApplicationUser> userManager,
         IUserService userService,
+        IEmailService emailService,
         IActivityService activityService
     ) : ApiController(logger, appSettings)
     {
@@ -44,13 +45,22 @@ namespace SocialMediaApp.Controllers
         {
             var appUser = await GetUserByEmailOrUsername(email);
             var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            var queryParams = new Dictionary<string, string>()
+            var queryParams = new Dictionary<string, string?>()
             {
                 { "userId", appUser.Id },
                 { "token", token }
             };
-            string url = QueryHelpers.AddQueryString(_appSettings.FrontendUrl, queryParams);
-            // send email
+            var url = QueryHelpers.AddQueryString($"{_appSettings.FrontendUrl}/user/verify-email", queryParams);
+            await emailService.SendEmailAsync(new EmailModel
+            {
+                ToAddress = appUser.Email,
+                Subject = "Verify Email",
+                TemplateId = _appSettings.EmailSettings.ConfirmationTemplate,
+                DynamicValues = new Dictionary<string, string>(){
+                    { "name", appUser.Name},
+                    {"verify_email_url", url}
+                }
+            });
             return Ok(new ApiResponse<string>("Please check your email. " + url));
         }
 
@@ -72,7 +82,7 @@ namespace SocialMediaApp.Controllers
         public async Task<IActionResult> FollowUser([FromBody] FollowRequest followRequest)
         {
             await userService.FollowUserAsync(GetCurrentUserId(), followRequest.To);
-            var toUser = (await  userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
+            var toUser = (await userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
             await activityService.AddAsync(GetCurrentUserId(), $"You started following ${toUser?.Name}.");
             await activityService.AddAsync(toUser?.Id, $"${GetUserClaim(ClaimTypes.Name)} started following you.");
             return Ok(new ApiResponse<string>($"You started following ${toUser?.Name}."));
@@ -82,7 +92,7 @@ namespace SocialMediaApp.Controllers
         public async Task<IActionResult> UnFollowUser([FromBody] FollowRequest followRequest)
         {
             await userService.UnFollowUserAsync(GetCurrentUserId(), followRequest.To);
-            var toUser = (await  userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
+            var toUser = (await userService.GetApplicationUser(new HashSet<string>() { followRequest.To })).FirstOrDefault();
             await activityService.AddAsync(GetCurrentUserId(), $"You un-followed ${toUser?.Name}.");
             return Ok(new ApiResponse<string>($"You un-followed ${toUser?.Name}."));
         }
@@ -90,7 +100,7 @@ namespace SocialMediaApp.Controllers
         [HttpGet("get-activities")]
         public IActionResult GetActivities(int pageNo = 1, int limit = 10)
         {
-            var activities = activityService.GetUserActivities(GetCurrentUserId(),pageNo,limit);
+            var activities = activityService.GetUserActivities(GetCurrentUserId(), pageNo, limit);
             return Ok(new ApiResponse<IEnumerable<Activity>>(activities));
         }
 
